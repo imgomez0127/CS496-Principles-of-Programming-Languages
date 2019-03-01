@@ -1,0 +1,6 @@
+Q1. 
+    let f = proc (x) { x - 11 } in (f 77) 
+    ("f", proc("x",Sub(x,11),EmptyEnv?),App(f,77))
+    extend_env env "f" proc(...) -> App(f,77) -> let eval_expr env f 
+Q2.
+    Ast.aprog(ast.let("pred",Ast.proc("x",ast.sub(x,1),ast.app(pred,5)

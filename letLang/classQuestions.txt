@@ -1,0 +1,15 @@
+
+Folder structure
+
+ast.ml: AST
+ds.ml: Expressed values and environment
+interp.ml: interpreter
+test.ml: Tests
+lexer.mll: Lexer generator file (ocamllex)
+parser.mly Parser generator file (menhir)
+
+Parsing
+
+Tuple/Untuple
+
+the theory of parsing and traslation and compiling
