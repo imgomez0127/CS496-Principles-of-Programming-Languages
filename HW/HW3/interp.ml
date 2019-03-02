@@ -21,7 +21,7 @@ let rec eval (en:env) (e:expr):exp_val =
     let v2 = eval en e2  in
     NumVal ((numVal_to_num v1) - (numVal_to_num v2))
   | Add(e1, e2)     -> NumVal((numVal_to_num (eval en e1)) + (numVal_to_num (eval en e2)))
-  | Div(e1, e2)     -> NumVal((numVal_to_num (eval en e1)) - (numVal_to_num (eval en e2)))
+  | Div(e1, e2)     -> NumVal((numVal_to_num (eval en e1)) / (numVal_to_num (eval en e2)))
   | Mul(e1, e2)     -> NumVal((numVal_to_num (eval en e1)) * (numVal_to_num (eval en e2)))
   | Abs(e1)         -> NumVal (abs (numVal_to_num (eval en e1)))
   | Cons(e1, e2)    -> ListVal((eval en e1)::(listVal_to_list (eval en e2)))
@@ -45,7 +45,15 @@ let rec eval (en:env) (e:expr):exp_val =
   | Node(e1,lt,rt)  -> let lt_ = (treeVal_to_tree(eval en lt)) in 
                        let rt_ = (treeVal_to_tree(eval en rt)) in 
                        TreeVal(Node((eval en e1),lt_,rt_))
-  | CaseT(target,emptycase,id_e,id_lt,id_rt,nodecase) -> failwith("Implement me!")
+  | CaseT(target,emptycase,id_e,id_lt,id_rt,nodecase) -> 
+    let t = eval en target
+    in match t with
+    | TreeVal(Empty) -> eval en emptycase
+    | TreeVal(Node(e,lt,rt)) -> let en1 = (extend_env en id_e e) in 
+                                let en2 = (extend_env en1 id_lt (TreeVal(lt))) in 
+                                let en3 = (extend_env en2 id_rt (TreeVal(rt))) in
+                                eval en3 nodecase
+    | _ -> failwith "The target did not evaluate to a Tree"
 
 
 (***********************************************************************)
