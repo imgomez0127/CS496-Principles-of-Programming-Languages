@@ -3,4 +3,21 @@ Q1.
     ("f", proc("x",Sub(x,11),EmptyEnv?),App(f,77))
     extend_env env "f" proc(...) -> App(f,77) -> let eval_expr env f 
 Q2.
-    Ast.aprog(ast.let("pred",Ast.proc("x",ast.sub(x,1),ast.app(pred,5)
+    Ast.aprog(ast.let("pred",Ast.proc("x",ast.sub(x,1),ast.app(pred,5))
+Q3.
+See EX1.ml
+Q4.
+ProcVal("x", Ast.Sub(Ast.Var("x"),Ast.Num(11)),EmptyEnv)
+Q5.
+ProcVal("x", Ast.Let(Ast.Var("y"),2,"x"),EmptyEnv)
+Q6.
+ProcVal("x",Ast.Var(x), ExtendEnv("a",1,EmptyEnv))
+Q7.
+ProcVal("x" , x, ExtendEnv("b", 2, ExtendEnv("a", 1, EmptyEnv)))
+Q8.
+ProcVal("x", proc("y", Ast.Sub(x,y)), EmptyEnv)
+Q9.
+-----------------
+x | numval 2 
+y | ProcVal("d",x,ExtendEnv("x",numval 2, EmptyEnv))
+z | ProcVal("d",x,ExtendEnv("y",ProcVal("d",x,ExtendEnv("x",numval 2, EmptyEnv)),ExtendEnv("x",numval 2, emptyenv)

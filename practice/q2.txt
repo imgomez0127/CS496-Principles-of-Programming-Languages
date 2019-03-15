@@ -1,0 +1,28 @@
+1)
+a)
+<E> -> (<E>) -> (<E> + <E>) -> ((<E>) + <E>) -> ((<Number>) + <E>) -> ((4) + <E>) -> 
+((4) + abs(<E>)) -> ((4) + abs(<Number>)) -> ((4) + abs(7))
+b)
+    <E>
+------------
+<Number>, <E> + <E>, abs(<E>), (<E>)
+
+<Number>
+-----------
+n, with n in N
+2)
+F
+T
+T
+T
+3)
+
+Free: y z
+Bound x y
+
+4)
+
+((lambda x.y)y) {y <- q z}
+(lambda x.y) {y <- q z} y {y <- q z}
+(lambda x.y{y <- q z}) (q z)
+(lambda x.q z)(q z)

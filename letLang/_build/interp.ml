@@ -2,9 +2,13 @@ open Ast
 open Ds
 
 
-let init_env = EmptyEnv
-    
-let rec eval_expr (en:env) (e:expr) :exp_val =
+let init_env = EmptyEnv    
+let rec apply_proc f a =
+  match f with
+    ProcVal (x,b,env) -> eval_expr (extend_env env x a) b
+  | _ -> failwith "apply_proc: Not a procVal"
+and
+  eval_expr (en:env) (e:expr) :exp_val =
   match e with
   | Int n          -> NumVal n
   | Var id          ->
@@ -22,13 +26,19 @@ let rec eval_expr (en:env) (e:expr) :exp_val =
   | IsZero(e) ->
     let v1 = eval_expr en e  in
     BoolVal (numVal_to_num v1=0)
-  |  ITE(e1,e2,e3) -> let boolean = (boolVal_to_bool (eval_expr en e1)) in if boolean then eval_expr en e2 else eval_expr en e3
-  | Let(x, e1, e2) -> eval_expr (extend_env en x (eval_expr en e1)) e2
+  |  ITE(e1,e2,e3) ->
+    let v1 = eval_expr en e1
+    in    if boolVal_to_bool v1
+    then eval_expr en e2
+    else eval_expr en e3
+  | Let(x, e1, e2) ->
+    let v1 = eval_expr en e1  in
+    eval_expr (extend_env en x v1) e2
   | Proc(x,e)      -> ProcVal (x,e,en)
-  | App(e1,e2)     -> let f = eval_expr en e1
-    in (match f with
-    |  ProcVal(x,e,env) -> eval_expr (extend_env env x (eval_expr env e2)) e
-    | _ -> failwith("Not a procVal"))
+  | App(e1,e2)     ->
+    let v1 = eval_expr en e1 in
+    let v2 = eval_expr en e2 in
+    apply_proc v1 v2
   | _ -> failwith("Not implemented")
 and
   eval_prog (AProg e) = eval_expr init_env e

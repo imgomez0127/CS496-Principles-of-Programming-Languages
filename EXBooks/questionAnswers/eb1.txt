@@ -1,0 +1,27 @@
+Ex 1.
+1. 
+Terminals : n, +, -, ()
+Non-terminals: E, Number
+2.
+the addition and subtraction of numbers?
+3.
+<E> -> <E> + <E> -> <Number> + <E> -> 1 + <E> -> 1 + (<E>) -> 1 + (<E> - <E>) ->
+1 + (<Number> - <E>) -> 1 + ( 4 - <E>) -> 1 + (4 - <Number>) -> 1 + ( 4 - 7 )
+Ex 2.
+<SimpleBTree> -> {*<SimpleBTree><SimpleBTree>*} -> {*<Number><SimpleBTree>*} -> 
+{*2 <SimpleBTree> *} -> {*2 {*<SimpleBTree><SimpleBTree>*}*} -> {*2{*<Number> <SimpleBTree>*}} ->
+{*2{*3 <SimpleBTree> *}*} -> {*2{*3 <Number>*}*} -> {*2{*3 4*}*}
+Ex 3.
+Look at EX1.ml
+Ex 4.
+Look at Ex1.ml
+Ex 5.
+1) Node(Leaf(2),Node(Leaf(3),Leaf(4)))
+2) Look at Ex1.ml
+3)Look at Ex1.ml
+4)Look at Ex1.ml
+Ex 6.
+Look at Ex1.ml
+let t = Node(6,
+Node(2, Leaf 1, Node(4,Leaf 3, Leaf 5)),
+Node(7,Leaf 8, Leaf 9));;
