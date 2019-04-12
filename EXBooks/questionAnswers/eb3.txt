@@ -1,0 +1,47 @@
+1)
+env
+--|-----
+a | RefVal(0)
+b | RefVal(1)
+Store
+--|-----
+0 | NumVal(3)
+1 | NumVal(3)
+2)
+--|-----
+a | RefVal(0)
+b | RefVal(1)
+
+--|-----
+0 | NumVal(2)
+1 | NumVal(3)
+
+3)
+--|----
+a | RefVal(0)
+x | RefVal(2)
+
+
+--|----
+0 | NumVal(2)
+1 | ProcVal("x", begin set a = x; a end, a->RefVal(0))
+2 | NumVal(3)
+
+4)
+--|---
+a | RefVal(0)
+b | RefVal(1)
+
+--|----
+0 | NumVal(4)
+1 | ProcVal("x", begin set a = x; a end a->RefVal(0)
+
+5)
+let a = 2 in 
+let b = proc (x) { set a = x} in 
+let c = proc (x) { a + x } in
+begin 
+b(5)
+c(5)
+end
+

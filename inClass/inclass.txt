@@ -1,0 +1,38 @@
+Env
+------------
+a| RefVal(0)             
+x| RefVal(2)
+
+
+store
+------------
+0 | NumVal(3)
+1 | ProcVal("x", begin set a = x; a end, a->refval 0)
+2 | NumVal(3)
+
+let a = 3
+in let f = proc (x) { 
+        begin 
+            set a = 4;
+            x
+        end}
+in let g = proc(y){
+            y+a
+            }
+in (f 2) + (g 3)
+
+would return 9
+
+env
+--------------
+a | refval 0 
+f | refval 1
+g | refval 2
+
+Store
+----------
+0 | numval 3
+1 | procval("x" ,begin set a = 4 x end, a->refval(0))
+2 | procval("y", y + a, a-> refval(0), f-> refval(1))
+3 | numval 2
+4 | numval 3
