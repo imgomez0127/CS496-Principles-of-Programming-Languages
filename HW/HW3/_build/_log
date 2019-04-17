@@ -1,6 +1,6 @@
 ### Starting build.
-# Target: test.ml.depends, tags: { package(oUnit), bin_annot, extension:ml, file:test.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package oUnit -modules test.ml > test.ml.depends
+# Target: main.ml.depends, tags: { package(oUnit), bin_annot, extension:ml, file:main.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package oUnit -modules main.ml > main.ml.depends # cached
 # Target: ast.ml.depends, tags: { package(oUnit), bin_annot, extension:ml, file:ast.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -package oUnit -modules ast.ml > ast.ml.depends # cached
 # Target: ast.cmo, tags: { package(oUnit), bin_annot, byte, compile, extension:cmo, extension:ml, file:ast.cmo, file:ast.ml, implem, ocaml, quiet }
@@ -27,12 +27,12 @@ ocamlfind ocamlc -c -bin-annot -package oUnit -o parser.cmi parser.mli # cached
 ocamlfind ocamlc -c -bin-annot -package oUnit -o lexer.cmo lexer.ml # cached
 # Target: interp.cmo, tags: { package(oUnit), bin_annot, byte, compile, extension:cmo, extension:ml, file:interp.cmo, file:interp.ml, implem, ocaml, quiet }
 ocamlfind ocamlc -c -bin-annot -package oUnit -o interp.cmo interp.ml # cached
-# Target: test.cmo, tags: { package(oUnit), bin_annot, byte, compile, extension:cmo, extension:ml, file:test.cmo, file:test.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -bin-annot -package oUnit -o test.cmo test.ml
+# Target: main.cmo, tags: { package(oUnit), bin_annot, byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -bin-annot -package oUnit -o main.cmo main.ml # cached
 # Target: parser.ml.depends, tags: { package(oUnit), bin_annot, extension:ml, file:parser.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -package oUnit -modules parser.ml > parser.ml.depends # cached
 # Target: parser.cmo, tags: { package(oUnit), bin_annot, byte, compile, extension:cmo, extension:ml, file:parser.cmo, file:parser.ml, implem, ocaml, quiet }
 ocamlfind ocamlc -c -bin-annot -package oUnit -o parser.cmo parser.ml # cached
-# Target: test.byte, tags: { package(oUnit), bin_annot, byte, dont_link_with, extension:byte, file:test.byte, link, ocaml, program, quiet }
-ocamlfind ocamlc -linkpkg -package oUnit ast.cmo ds.cmo parser.cmo lexer.cmo interp.cmo test.cmo -o test.byte
+# Target: main.byte, tags: { package(oUnit), bin_annot, byte, dont_link_with, extension:byte, file:main.byte, link, ocaml, program, quiet }
+ocamlfind ocamlc -linkpkg -package oUnit ast.cmo ds.cmo parser.cmo lexer.cmo interp.cmo main.cmo -o main.byte # cached
 # Compilation successful.

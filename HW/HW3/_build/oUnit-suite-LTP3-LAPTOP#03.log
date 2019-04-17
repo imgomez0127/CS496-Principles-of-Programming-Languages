@@ -1,12 +1,15 @@
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: Start test suite:2:abs_neg.
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: Test suite:2:abs_neg is successful.
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: End test suite:2:abs_neg.
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: Start test suite:8:let.
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: Test suite:8:let is successful.
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: End test suite:8:let.
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: Start test suite:11:cons_singleton.
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: Test suite:11:cons_singleton is successful.
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: End test suite:11:cons_singleton.
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: Start test suite:15:tl_singleton.
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: Test suite:15:tl_singleton is successful.
-2019-03-04T01:55:41+00:00 LTP3-LAPTOP#03 I: End test suite:15:tl_singleton.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: Start test suite:2:abs_neg.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: Test suite:2:abs_neg is successful.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: End test suite:2:abs_neg.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: Start test suite:7:divs.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: Test suite:7:divs is successful.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: End test suite:7:divs.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: Start test suite:12:cons_list.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: Test suite:12:cons_list is successful.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: End test suite:12:cons_list.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: Start test suite:16:tl_list1.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: Test suite:16:tl_list1 is successful.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: End test suite:16:tl_list1.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: Start test suite:19:null_false.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: Test suite:19:null_false is successful.
+2019-04-17T17:17:07+00:00 LTP3-LAPTOP#03 I: End test suite:19:null_false.
