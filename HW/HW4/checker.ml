@@ -1,5 +1,5 @@
 open Ast
-
+(* I pledge my honor that I have abided by the Stevens honor system - igomez1 Ian Gomez *)
 let from_some = function
   | None -> failwith "from_some: None"
   | Some v -> v
@@ -106,31 +106,38 @@ and
     | _ -> failwith"WHAT A SHIT CS STUDENT HOLY")
 
   (* list *)
-  | EmptyList(t) ->
-    failwith "TODO: Implement me!"
-  | Cons(he, te) ->
-    failwith "TODO: Implement me!"
-  | Null(e) ->
-    failwith "TODO: Implement me!"
-  | Hd(e) ->
-    failwith "TODO: Implement me!"
-  | Tl(e) ->
-    failwith "TODO: Implement me!"
+  | EmptyList(t) -> ListType(t)
+  | Cons(he, te) -> let headType = (type_of_expr en he) in 
+                    (match (type_of_expr en te) with
+                        | ListType(t) -> if headType = t then ListType(t) else 
+                                        failwith "WHY CAN YOU NOT CODE"
+                        | _ -> failwith "ITS JUST TYPES ITS EZ COME ON!!!")
+  | Null(e) -> (match type_of_expr en e with
+                | ListType(t) -> BoolType
+                | _ -> failwith "ITS JUST TYPING WORDS INTO A TERMINAL COME ON")
+  | Hd(e) -> (match type_of_expr en e with
+                | ListType(t) -> t
+                | _ -> failwith "CAN YOU EVEN THINK LOGICALLY")
 
+  | Tl(e) -> (match type_of_expr en e with
+                | ListType(t) -> ListType(t)
+                | _ -> failwith "JUST READ THE TYPE RULINGS IT SO EZ")
   (* tree *)
-  | EmptyTree(t) ->
-    failwith "TODO: Implement me!"
-  | Node(de, le, re) ->
-    failwith "TODO: Implement me!"
-  | NullT(t) ->
-    failwith "TODO: Implement me!"
-  | GetData(t) ->
-    failwith "TODO: Implement me!"
-  | GetLST(t) ->
-    failwith "TODO: Implement me!"
-  | GetRST(t) ->
-    failwith "TODO: Implement me!"
+  | EmptyTree(t) -> TreeType(t)
+  | Node(de, le, re) -> let deType = (type_of_expr en de) in let leType = (type_of_expr en le)in  let reType = (type_of_expr en re) in if (TreeType(deType) = leType) && (TreeType(deType) = reType) then TreeType(deType) else failwith "HAS ED TAUGHT YOU NOTHING????"
+  | NullT(t) -> let tType = (type_of_expr en t) in (match tType with
+    | TreeType(t) -> BoolType
+    | _ -> failwith"THROW OUT YOUR COMPUTER")
+  | GetData(t) -> let tType = (type_of_expr en t) in (match tType with
+    | TreeType(t) -> t
+    | _ -> failwith"YOU EXPECT TO A BROGRAMMER WITH THIS????")
+  | GetLST(t) -> let tType = (type_of_expr en t) in (match tType with
+    | TreeType(t) -> TreeType(t)
+    | _ -> failwith"ARE YOU TRYING TO BE A ROBLOX FREELANCER????")
 
+  | GetRST(t) -> let tType = (type_of_expr en t) in (match tType with
+    | TreeType(t) -> TreeType(t)
+    | _ -> failwith"I BET YOU JUST MAKE POWERPOINTS AND DONT ACTUALLY CODE")
 
   | Debug ->
     print_string "Environment:\n";

@@ -1,5 +1,5 @@
 (* The type of the abstract syntax tree (AST). *)
-
+(* I pledge my honor that I have abided by the Stevens honor system - igomez1 Ian Gomez *)
 type expr =
   | Var of string
   | Int of int
@@ -100,10 +100,10 @@ and string_of_texpr = function
   | BoolType -> "bool"
   | FuncType(t1,t2) -> "("^string_of_texpr t1^"->"^string_of_texpr t2^")"
   | RefType(t) -> "Ref("^string_of_texpr t^")"
-  (* TODO: UnitType
-   *       PairType
-   *       ListType
-   *       TreeType *)
+  | UnitType -> "UnitType"
+  | PairType(t1,t2) -> "Pair(" ^ string_of_texpr t1 ^ ", " ^string_of_texpr t2 ^")"
+  | ListType(l) -> "List" 
+  | TreeType(t) -> "Tree"
   | _ -> failwith "TODO: implement me"
 
 let string_of_prog (AProg e)  = string_of_expr e

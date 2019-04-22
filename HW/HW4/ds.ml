@@ -1,6 +1,6 @@
 
 (* This file defines expressed values and environments *)
-
+(* I pledge my honor that I have abided by the Stevens honor system - igomez1 Ian Gomez *)
 
 (* expressed values and environments are defined mutually recursively *)
 
@@ -12,7 +12,7 @@ type exp_val =
   | UnitVal
   | PairVal of Ast.expr * Ast.expr
   | ListVal of Ast.expr list
-  (*  TODO: TreeVal *)
+  | TreeVal of btree
 and
   env =
   | EmptyEnv
@@ -82,6 +82,10 @@ let rec string_of_expval = function
   | BoolVal b -> "BoolVal " ^ string_of_bool b
   | ProcVal (id,body,env) -> "ProcVal ("^id^","^Ast.string_of_expr body^","^ string_of_env env^")"
   | RefVal i -> "RefVal (" ^ string_of_int i ^ ")"
+  | PairVal(t1,t2) -> "PairVal (" ^ (Ast.string_of_expr t1) ^ ", " ^ (Ast.string_of_expr t2) ^")"
+  | ListVal l -> "ListVal"
+  | TreeVal t -> "TreeVal"
+  | UnitVal -> "UnitVal"
   (* TODO: new cases for
    *                    PairVal
    *                    ListVal
