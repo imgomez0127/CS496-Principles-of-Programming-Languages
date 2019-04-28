@@ -1,0 +1,13 @@
+INTERP CASES 
+
+case 1 
+interp "Node<3,Nil<>,Nil<>>";;
+
+case 2
+
+interp "type treeInt = | Nil<> | Node<int,treeInt,treeInt>";;
+
+
+
+interp "begin type  treeInt =| Nil
+| Node <int ,treeInt ,treeInt >;letrec  ((int  -> int) -> treeInt) mapT(t:treeInt) =proc (f:(int  -> int)) {case t of {Nil  -> Nil Node <x,y,z> ->Node <(f x), ((mapT y) f), ((mapT z) f)>} }in ((mapT (Node <2,Nil ,Nil >)) (proc(x:int) {x+1}))end";;
