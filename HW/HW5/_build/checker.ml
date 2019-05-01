@@ -1,5 +1,5 @@
 open Ast
-
+open Seq
 let from_some = function
   | None -> failwith "from_some: None"
   | Some v -> v
@@ -22,7 +22,28 @@ let rec apply_tenv (tenv:tenv) (id:string):texpr option =
     then Some value
     else apply_tenv tenv1 id
 
+let has_constructor = fun constructorLst constructorName -> if List.find_opt (fun x -> let Ast.CDec(name,args) = x in name  = constructorName) constructorLst != None then true else false
+
+let compute_sigma_inverse = fun userDefinedTenv constructor -> 
+    let rec compute_sigma_inverse_helper = fun seq_list ->
+        (match seq_list with
+            | Nil -> failwith "Constructor not found"
+            | Cons(x,xs) -> if (has_constructor (Hashtbl.find userDefinedTenv x) constructor) then x else compute_sigma_inverse_helper (xs ()) 
+        ) in compute_sigma_inverse_helper ((Hashtbl.to_seq_keys userDefinedTenv) ())
   
+let rec get_constructor_arguments = fun constructor_list constructor ->
+    match constructor_list with
+    | [] -> failwith "Constructor does not exist"
+    | CDec(tag,args)::rest_of_constructor_list -> if tag = constructor 
+        then args 
+        else get_constructor_arguments rest_of_constructor_list constructor
+
+
+let rec allEvalToSame = fun lst -> 
+    match lst with
+    | [] -> true
+    | x::xs -> let overallType = x in (List.fold_left (fun thingy curType -> (curType = overallType)&&thingy) true xs)
+
 let init_tenv () =
      extend_tenv "x"  IntType 
      @@ extend_tenv "v" IntType
@@ -101,13 +122,42 @@ and
     in (match t1 with
     | RefType tval when tval=t2 -> UnitType
     | _ -> failwith "SetRef: type of LHS and RHS do not match")
-  | TypeDecl(id,cs) -> failwith "Implement me!"
-  | Variant(tag,args) -> failwith "Implement me!"
-  | Case(cond,branches) -> failwith "Implement me!"
+  | TypeDecl(id,cs) -> begin Hashtbl.add tdecls id cs;UnitType; end
+  | Variant(tag,args) -> let userType = compute_sigma_inverse tdecls tag in 
+    let constructorList = (Hashtbl.find tdecls userType) in
+    let constructorArgTypes = get_constructor_arguments constructorList tag in 
+    if (List.length constructorArgTypes) = (List.length args) then 
+        if checkArgTypes constructorArgTypes args tdecls en 
+            then UserType(userType) 
+            else failwith "Not all args of the constructor are the same type" 
+    else failwith "Both constructors are not of the same length"
+  | Case(cond,branches) -> 
+    let UserType(condType) = type_of_expr tdecls en cond in 
+    let constructorList_opt = (Hashtbl.find_opt tdecls condType) in 
+        if constructorList_opt != None then let Some(constructorLst) = constructorList_opt in 
+            if (List.length constructorLst) = (List.length branches) then 
+                let branchEvalLst = eval_branches constructorLst branches en tdecls in 
+                    if (allEvalToSame branchEvalLst) then let x::xs = branchEvalLst in x 
+                    else failwith"FUCKOFF"
+    else failwith "You do not have an equal amount of constructors and branches" 
+    else failwith "Item of this type does not exist"
   | Debug ->
     print_string "Environment:\n";
     print_string @@ string_of_tenv en;
     UnitType
+and checkArgTypes = fun constructor args tdecls tenv->
+    match constructor,args with
+    | [],[] -> true
+    | _,[] -> failwith "The arguments have more items than the defined constructor"
+    | [],_ -> failwith "The constructor has less items than the input constructor"
+    | x::xs,y::ys -> x = (type_of_expr tdecls tenv y) && (checkArgTypes xs ys tdecls tenv)
+and eval_branches = fun constructorLst branches tenv tdecls->
+    match constructorLst,branches with
+    | [],[] -> []
+    | x::xs,[] -> failwith"?"
+    | [],y::ys -> failwith"?"
+    | x::xs,y::ys -> let Branch(branchName,idLst,body)=y in let CDec(constructorName,argTypes) = x in if branchName = constructorName then let condsEnv = List.fold_left2 (fun accumEnv id argType -> extend_tenv id argType accumEnv) tenv idLst argTypes in (type_of_expr tdecls condsEnv body)::eval_branches xs ys tenv tdecls else failwith"Branch isnt the same name"
+
            
     
 

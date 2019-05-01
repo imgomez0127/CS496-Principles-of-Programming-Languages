@@ -1,1 +1,1 @@
-checker.ml: Ast Hashtbl Lexer Lexing List Parser
+checker.ml: Ast Hashtbl Lexer Lexing List Parser Seq
