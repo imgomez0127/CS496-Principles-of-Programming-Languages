@@ -25,12 +25,11 @@ let rec apply_tenv (tenv:tenv) (id:string):texpr option =
 let has_constructor = fun constructorLst constructorName -> if List.find_opt (fun x -> let Ast.CDec(name,args) = x in name  = constructorName) constructorLst != None then true else false
 
 let compute_sigma_inverse = fun userDefinedTenv constructor -> 
-    let rec compute_sigma_inverse_helper = fun seq_list ->
-        (match seq_list with
-            | Nil -> failwith "Constructor not found"
-            | Cons(x,xs) -> if (has_constructor (Hashtbl.find userDefinedTenv x) constructor) then x else compute_sigma_inverse_helper (xs ()) 
-        ) in compute_sigma_inverse_helper ((Hashtbl.to_seq_keys userDefinedTenv) ())
-  
+    Hashtbl.fold (fun userType constructorLst returnType -> 
+        if has_constructor constructorLst constructor 
+            then userType 
+            else returnType) userDefinedTenv ""
+
 let rec get_constructor_arguments = fun constructor_list constructor ->
     match constructor_list with
     | [] -> failwith "Constructor does not exist"
@@ -133,14 +132,13 @@ and
     else failwith "Both constructors are not of the same length"
   | Case(cond,branches) -> 
     let UserType(condType) = type_of_expr tdecls en cond in 
-    let constructorList_opt = (Hashtbl.find_opt tdecls condType) in 
-        if constructorList_opt != None then let Some(constructorLst) = constructorList_opt in 
-            if (List.length constructorLst) = (List.length branches) then 
-                let branchEvalLst = eval_branches constructorLst branches en tdecls in 
-                    if (allEvalToSame branchEvalLst) then let x::xs = branchEvalLst in x 
-                    else failwith"FUCKOFF"
+    let constructorLst = from_some @@ (Hashtbl.find_opt tdecls condType) in 
+    if (List.length constructorLst) = (List.length branches) then 
+        let branchEvalLst = eval_branches constructorLst branches en tdecls in 
+            if (allEvalToSame branchEvalLst) 
+                then List.hd branchEvalLst 
+                else failwith"All branches do not eval to the same thing"
     else failwith "You do not have an equal amount of constructors and branches" 
-    else failwith "Item of this type does not exist"
   | Debug ->
     print_string "Environment:\n";
     print_string @@ string_of_tenv en;
@@ -156,7 +154,7 @@ and eval_branches = fun constructorLst branches tenv tdecls->
     | [],[] -> []
     | x::xs,[] -> failwith"?"
     | [],y::ys -> failwith"?"
-    | x::xs,y::ys -> let Branch(branchName,idLst,body)=y in let CDec(constructorName,argTypes) = x in if branchName = constructorName then let condsEnv = List.fold_left2 (fun accumEnv id argType -> extend_tenv id argType accumEnv) tenv idLst argTypes in (type_of_expr tdecls condsEnv body)::eval_branches xs ys tenv tdecls else failwith"Branch isnt the same name"
+    | x::xs,y::ys -> let Branch(branchName,idLst,body)=y in let CDec(constructorName,argTypes) = x in if branchName = constructorName then let condsEnv = List.fold_left2 (fun accumEnv id argType -> extend_tenv id argType accumEnv) tenv idLst argTypes in (type_of_expr tdecls condsEnv body)::eval_branches xs ys tenv tdecls else failwith"Branches do not come in the same order as the Constructor Declaration"
 
            
     

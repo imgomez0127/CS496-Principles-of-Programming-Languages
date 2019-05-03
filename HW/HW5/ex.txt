@@ -1,4 +1,4 @@
-INTERP CASES 
+INTERP/CHK CASES
 
 case 1 
 interp "Node<3,Nil<>,Nil<>>";;
@@ -11,6 +11,7 @@ case3
 
 interp "begin type  treeInt =| Nil
 | Node <int ,treeInt ,treeInt >;letrec  ((int  -> int) -> treeInt) mapT(t:treeInt) =proc (f:(int  -> int)) {case t of {Nil  -> Nil Node <x,y,z> ->Node <(f x), ((mapT y) f), ((mapT z) f)>} }in ((mapT (Node <2,Nil ,Nil >)) (proc(x:int) {x+1}))end";;
+
 case4 
-"begin type treeInt=|Nil<>|Node<int,treeInt,treeInt>;let getRoot = proc (t:treeInt) { case t of { Nil  -> error Node <x,y,z> -> x} }in (getRoot (Node <1,Nil<> ,Nil<> >))end";;
+"begin type treeInt=|Nil<>|Node<int,treeInt,treeInt>;let error = 69 in let getRoot = proc (t:treeInt) { case t of { Nil  -> error Node <x,y,z> -> x} }in (getRoot (Node <1,Nil<> ,Nil<> >))end";;
 
