@@ -3,9 +3,10 @@ open Seq
 let from_some = function
   | None -> failwith "from_some: None"
   | Some v -> v
-
+(* "I pledge my honor that I have abided by the Stevens honor system" - igomez1 Ian Gomez *)
 (*  ;;;;;;;;;;;;;;;; type environments ;;;;;;;;;;;;;;;; *)
-    
+(* Since the assignment didn't specify I implemented it so that if the constructors in case T do not match the same order
+when the type is declared it failwiths *)
 type tenv =
   | EmptyTEnv
   | ExtendTEnv of string*texpr*tenv
@@ -42,6 +43,11 @@ let rec allEvalToSame = fun lst ->
     match lst with
     | [] -> true
     | x::xs -> let overallType = x in (List.fold_left (fun thingy curType -> (curType = overallType)&&thingy) true xs)
+
+let getCondType = fun typeJudgement->
+    match typeJudgement with
+    | UserType(condType) -> condType
+    | _ -> failwith "The cond is not a user type"
 
 let init_tenv () =
      extend_tenv "x"  IntType 
@@ -131,7 +137,7 @@ and
             else failwith "Not all args of the constructor are the same type" 
     else failwith "Both constructors are not of the same length"
   | Case(cond,branches) -> 
-    let UserType(condType) = type_of_expr tdecls en cond in 
+    let condType = getCondType @@ (type_of_expr tdecls en cond) in 
     let constructorLst = from_some @@ (Hashtbl.find_opt tdecls condType) in 
     if (List.length constructorLst) = (List.length branches) then 
         let branchEvalLst = eval_branches constructorLst branches en tdecls in 

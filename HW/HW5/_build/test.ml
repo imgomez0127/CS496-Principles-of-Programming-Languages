@@ -63,9 +63,38 @@ begin
  } }
     in ((mapT (Node<2,Nil,Nil>)) (proc(x:int) {x+1}))
 end
-"))
+"));
 
+                "test6"  >:: (fun _ -> assert_equal (Ast.FuncType(Ast.UserType("treeInt"), Ast.BoolType))
+                                  (chk "
+begin
+   type treeInt =
+     | Nil
+     | Node<int,treeInt,treeInt>;
+   let isEmpty=
+    proc(t:treeInt) {
+       case t of {
+         Nil -> zero?(0)
+         Node<x,y,z> -> zero?(1)
+       } }
+   in isEmpty 
+ end
+"));
 
+                "test7"  >:: (fun _ -> assert_equal (Ast.UserType "treeInt")
+                                  (chk "
+begin
+   type treeInt =
+     | Nil
+     | Node<int,treeInt,treeInt>;
+   Nil<>
+ end
+"));
+
+                "test8"  >:: (fun _ -> assert_equal (Ast.UserType "treeInt")
+                                  (chk "begin type  treeInt =| Nil
+| Node <int ,treeInt ,treeInt >;letrec  ((int  -> int) -> treeInt) mapT(t:treeInt) =proc (f:(int  -> int)) {case t of {Nil  -> Nil Node <x,y,z> ->Node <(f x), ((mapT y) f), ((mapT z) f)>} }in ((mapT (Node <2,Nil ,Nil >)) (proc(x:int) {x+1}))end"
+))
 
 
 
@@ -78,6 +107,7 @@ end
  * 4")); *)
 
    ]
+
 
 
 

@@ -1,12 +1,12 @@
 ### Starting build.
 # Target: test.ml.depends, tags: { package(oUnit), bin_annot, extension:ml, file:test.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package oUnit -modules test.ml > test.ml.depends # cached
-# Target: ds.ml.depends, tags: { package(oUnit), bin_annot, extension:ml, file:ds.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package oUnit -modules ds.ml > ds.ml.depends # cached
+ocamlfind ocamldep -package oUnit -modules test.ml > test.ml.depends
 # Target: ast.ml.depends, tags: { package(oUnit), bin_annot, extension:ml, file:ast.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -package oUnit -modules ast.ml > ast.ml.depends # cached
 # Target: ast.cmo, tags: { package(oUnit), bin_annot, byte, compile, extension:cmo, extension:ml, file:ast.cmo, file:ast.ml, implem, ocaml, quiet }
 ocamlfind ocamlc -c -bin-annot -package oUnit -o ast.cmo ast.ml # cached
+# Target: ds.ml.depends, tags: { package(oUnit), bin_annot, extension:ml, file:ds.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package oUnit -modules ds.ml > ds.ml.depends # cached
 # Target: ds.cmo, tags: { package(oUnit), bin_annot, byte, compile, extension:cmo, extension:ml, file:ds.cmo, file:ds.ml, implem, ocaml, quiet }
 ocamlfind ocamlc -c -bin-annot -package oUnit -o ds.cmo ds.ml # cached
 # Target: main.ml.depends, tags: { package(oUnit), bin_annot, extension:ml, file:main.ml, ocaml, ocamldep, quiet }

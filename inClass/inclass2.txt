@@ -1,0 +1,30 @@
+let f = let q = 0 in proc(y){begin set q = q + 1;q end} in (proc(x){x+x} (f 0))
+b1.1
+    Env
+    --------------------------
+    f| RefVal(1)
+    
+
+
+    Store
+    -------------------------
+    0| NumVal(2)
+    1| ProcVal(y,set q = q + 1; q, ("q" RefVal(0))) 
+    2| ThunkVal((f 0),(f refval(1)))
+    3| ThunkVal("0", (f refval(1)))
+    4| ThunkVal("0", (f refval(1)))
+
+    returns 3
+b1.2
+
+     Env
+    --------------------------
+    f| RefVal(1)
+   
+   Store
+    -------------------------
+    0| NumVal(1)
+    1| ProcVal(y,set q = q + 1; q, ("q" RefVal(0))) 
+    2| NumVal(1)
+    3| ThunkVal("0",(f refval(1)))
+    returns 2
