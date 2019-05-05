@@ -38,7 +38,6 @@ let rec get_constructor_arguments = fun constructor_list constructor ->
         then args 
         else get_constructor_arguments rest_of_constructor_list constructor
 
-
 let rec allEvalToSame = fun lst -> 
     match lst with
     | [] -> true
@@ -156,11 +155,13 @@ and checkArgTypes = fun constructor args tdecls tenv->
     | [],_ -> failwith "The constructor has less items than the input constructor"
     | x::xs,y::ys -> x = (type_of_expr tdecls tenv y) && (checkArgTypes xs ys tdecls tenv)
 and eval_branches = fun constructorLst branches tenv tdecls->
-    match constructorLst,branches with
-    | [],[] -> []
-    | x::xs,[] -> failwith"?"
-    | [],y::ys -> failwith"?"
-    | x::xs,y::ys -> let Branch(branchName,idLst,body)=y in let CDec(constructorName,argTypes) = x in if branchName = constructorName then let condsEnv = List.fold_left2 (fun accumEnv id argType -> extend_tenv id argType accumEnv) tenv idLst argTypes in (type_of_expr tdecls condsEnv body)::eval_branches xs ys tenv tdecls else failwith"Branches do not come in the same order as the Constructor Declaration"
+    match branches with
+    | [] -> []
+    | x::xs -> let Branch(branchName,idLst,body) = x 
+        in let argsLst = get_constructor_arguments constructorLst branchName
+        in let condsEnv = List.fold_left2 (fun accumEnv id argType -> 
+             extend_tenv id argType accumEnv) tenv idLst argsLst
+        in (type_of_expr tdecls condsEnv body)::eval_branches constructorLst xs tenv tdecls 
 
            
     

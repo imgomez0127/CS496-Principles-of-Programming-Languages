@@ -97,7 +97,12 @@ begin
 ));
                 "test9"  >:: (fun _ -> assert_equal (Ast.IntType)
         (chk
+"begin type treeInt=|Nil<>|Node<int,treeInt,treeInt>;let error = 69 in let getRoot = proc (t:treeInt) { case t of { Nil  -> error Node <x,y,z> -> x} }in (getRoot (Node <1,Nil<> ,Nil<> >))end"));
+
+                "test10"  >:: (fun _ -> assert_equal (Ast.IntType)
+        (chk
 "begin type treeInt=|Nil<>|Node<int,treeInt,treeInt>;let error = 69 in let getRoot = proc (t:treeInt) { case t of { Nil  -> error Node <x,y,z> -> x} }in (getRoot (Node <1,Nil<> ,Nil<> >))end"))
+
 
 (*   "typecheck body inclusion 3"    >:: (fun _ -> assert_raises (Checker.Subtype_failure("m1"))
  *                                 (fun () -> chk " 
