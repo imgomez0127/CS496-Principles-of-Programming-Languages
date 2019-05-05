@@ -94,9 +94,10 @@ begin
                 "test8"  >:: (fun _ -> assert_equal (Ast.UserType "treeInt")
                                   (chk "begin type  treeInt =| Nil
 | Node <int ,treeInt ,treeInt >;letrec  ((int  -> int) -> treeInt) mapT(t:treeInt) =proc (f:(int  -> int)) {case t of {Nil  -> Nil Node <x,y,z> ->Node <(f x), ((mapT y) f), ((mapT z) f)>} }in ((mapT (Node <2,Nil ,Nil >)) (proc(x:int) {x+1}))end"
-))
-
-
+));
+                "test9"  >:: (fun _ -> assert_equal (Ast.IntType)
+        (chk
+"begin type treeInt=|Nil<>|Node<int,treeInt,treeInt>;let error = 69 in let getRoot = proc (t:treeInt) { case t of { Nil  -> error Node <x,y,z> -> x} }in (getRoot (Node <1,Nil<> ,Nil<> >))end"))
 
 (*   "typecheck body inclusion 3"    >:: (fun _ -> assert_raises (Checker.Subtype_failure("m1"))
  *                                 (fun () -> chk " 
